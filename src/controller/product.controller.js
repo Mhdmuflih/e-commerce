@@ -29,10 +29,13 @@ export const updateProduct = async (req, res) => {
     try {
         const {id} = req.params;
         console.log(id);
-        const { productName, quandity, desciption } = req.body;
+        const { productName, quandity, desciption, price } = req.body;
 
-        if (!productName || !quandity || !desciption) {
+        if (!productName || !quandity || !desciption || !price) {
             res.json("all field is required!");
+        }
+        if(price < 0) {
+            res.json("price is below 0, please update");
         }
 
         const product = await Product.findById({_id: id});
@@ -43,6 +46,7 @@ export const updateProduct = async (req, res) => {
         const bodyData = {
             productName:productName,
             quandity:quandity,
+            price: price,
             desciption:desciption
         }
 
